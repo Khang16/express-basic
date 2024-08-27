@@ -1,5 +1,6 @@
 import userModel from "../../models/user.model.js";
 import  crypto  from "crypto";
+import { hashMnacString } from "../../../../common/helper.js";
 class UserController{
     index(req,res){
         res.send("user index");
@@ -7,12 +8,17 @@ class UserController{
     async store(req,res){
         try {
             const {body} = req;
-            let password = body.password || "12345678";
-            password = crypto.createHmac('sha256','12345678').update(password).digest('hex');
+            let password = body.password || process.env.DEFAULT_PASSWORD;
+            password = hashMnacString(password);
             const user = await userModel.create({
                 ...body,
                 password,
             })
+            return res.json(
+                {
+                    user
+                }
+            );
         } catch (error) {
             return res.json(
                 {
