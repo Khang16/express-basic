@@ -9,3 +9,8 @@ export const USERS = {
         female: 2,
     }
 }
+
+export const PAGINATE_OPTIONS = {
+    page: 1,
+    limit: 10,
+}
